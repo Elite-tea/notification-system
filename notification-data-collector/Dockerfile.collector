@@ -1,0 +1,10 @@
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+
+COPY ./target/notification-data-collector-*.jar data-collector.jar
+COPY nC:\Users\Elite_tea\Documents\project\new\notification-system\notification-service\target\notification-data-collector-*.jar data-collector.jar
+
+EXPOSE 8082
+
+ENTRYPOINT ["java", "-jar", "data-collector.jar"]

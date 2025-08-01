@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@localhost">
+  <database-model serializer="dbm" dbms="MONGO" family-id="MONGO" format-version="4.53">
+    <root id="1">
+      <ServerVersion>6.0.25</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="admin"/>
+    <schema id="3" parent="1" name="config"/>
+    <schema id="4" parent="1" name="local"/>
+    <schema id="5" parent="1" name="notification_metrics">
+      <LastIntrospectionLocalTimestamp>2025-08-01.11:31:34</LastIntrospectionLocalTimestamp>
+    </schema>
+    <table id="6" parent="5" name="notification_metrics"/>
+    <column id="7" parent="6" name="_id">
+      <Position>1</Position>
+      <StoredType>ObjectId|12s</StoredType>
+    </column>
+    <column id="8" parent="6" name="_class">
+      <Position>2</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="9" parent="6" name="count">
+      <Position>3</Position>
+      <StoredType>Int64|12s</StoredType>
+    </column>
+    <column id="10" parent="6" name="lastUpdated">
+      <Position>4</Position>
+      <StoredType>ISODate|91s</StoredType>
+    </column>
+    <column id="11" parent="6" name="type">
+      <Position>5</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <index id="12" parent="6" name="_id_">
+      <ColNames>_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+  </database-model>
+</dataSource>
