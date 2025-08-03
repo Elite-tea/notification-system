@@ -18,15 +18,6 @@
     <name>Notification System</name>
     <description>Parent POM for Notification System with Spring Cloud</description>
 
-    <properties>
-        <java.version>21</java.version>
-        <spring-cloud.version>2022.0.4</spring-cloud.version>
-        <kafka.version>3.4.1</kafka.version>
-        <lombok.version>1.18.28</lombok.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <maven.version>3.5.4</maven.version>
-    </properties>
-
     <modules>
         <module>eureka-server</module>
         <module>api-gateway</module>
@@ -34,6 +25,16 @@
         <module>notification-data-collector</module>
         <module>notification-common</module>
     </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <kafka.version>3.9.1</kafka.version>
+        <lombok.version>1.18.38</lombok.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <spring-cloud-starter.version>4.3.0</spring-cloud-starter.version>
+        <notification-lib.version>1.0.0</notification-lib.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -44,6 +45,13 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!--Eureka-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${spring-cloud-starter.version}</version>
             </dependency>
 
             <!-- Kafka -->
@@ -72,6 +80,7 @@
             <dependency>
                 <groupId>ru.testtask</groupId>
                 <artifactId>notification-common</artifactId>
+                <version>${notification-lib.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -82,7 +91,6 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${maven.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
