@@ -1,10 +1,10 @@
 package ru.testtask.notification_data_collector.service;
 
 import lombok.Getter;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.testtask.model.NotificationRequest;
 import ru.testtask.notification_data_collector.model.NotificationMetrics;
 import ru.testtask.notification_data_collector.repository.MetricsRepository;
 
@@ -20,12 +20,14 @@ public class NotificationValidateService {
     }
 
     public ResponseEntity<NotificationMetrics> validateNotification(String type) {
-        try {
-            return metricsRepository.findByType(type)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+        if (type == null || type.trim().isEmpty()) {
+            throw new IllegalArgumentException("Notification type cannot be null or empty");
         }
+
+        NotificationMetrics metrics = metricsRepository.findByType(type.toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Notification metrics for type '%s' not found", type.toUpperCase())));
+
+        return ResponseEntity.ok(metrics);
     }
 }

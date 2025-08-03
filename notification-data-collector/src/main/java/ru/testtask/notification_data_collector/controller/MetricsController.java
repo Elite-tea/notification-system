@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.testtask.notification_data_collector.model.NotificationMetrics;
-import ru.testtask.notification_data_collector.repository.MetricsRepository;
 import ru.testtask.notification_data_collector.service.NotificationValidateService;
 
 import java.util.List;
@@ -16,12 +15,10 @@ import java.util.List;
 @RequestMapping("/api/metrics")
 public class MetricsController {
 
-    private final MetricsRepository metricsRepository;
     private final NotificationValidateService notificationValidateService;
 
     @Autowired
-    public MetricsController(MetricsRepository metricsRepository, NotificationValidateService notificationValidateService) {
-        this.metricsRepository = metricsRepository;
+    public MetricsController(NotificationValidateService notificationValidateService) {
         this.notificationValidateService = notificationValidateService;
     }
 
