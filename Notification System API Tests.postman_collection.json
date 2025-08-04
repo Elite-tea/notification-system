@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "f928b308-56d4-444f-8cf4-a5c8d0290084",
+		"name": "Notification System API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22834504"
+	},
+	"item": [
+		{
+			"name": "1. Check Eureka Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все сервисы поднялись\", function () {\r",
+							"    const responseBody = pm.response.text();\r",
+							"    \r",
+							"    pm.expect(responseBody).to.include(\"NOTIFICATION-DATA-COLLECTOR\");\r",
+							"    pm.expect(responseBody).to.include(\"API-GATEWAY\");\r",
+							"    pm.expect(responseBody).to.include(\"NOTIFICATION-SERVICE\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8761",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8761"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Send SMS Notification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"SMS\",\n  \"recipient\": \"+1234567890\",\n  \"message\": \"Your verification code is 123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Send Email Notification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"EMAIL\",\n  \"recipient\": \"user@example.com\",\n  \"message\": \"Your order has been shipped\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Send Push Notification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"PUSH\",\n  \"recipient\": \"device-token-123\",\n  \"message\": \"You have a new message\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/notifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Check Metrics (All)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/metrics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Check Specific Metric (SMS)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/metrics/SMS",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"metrics",
+						"SMS"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script can be added here if needed"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function() {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"// For POST requests",
+					"if (pm.request.method === \"POST\") {",
+					"    pm.test(\"Response contains success message\", function() {",
+					"        pm.expect(pm.response.text()).to.include(\"received\");",
+					"    });",
+					"}",
+					"",
+					"// For GET /metrics",
+					"if (pm.request.url.path.includes(\"metrics\")) {",
+					"    pm.test(\"Metrics response is valid\", function() {",
+					"        var jsonData = pm.response.json();",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		}
+	]
+}
